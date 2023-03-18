@@ -1,0 +1,5 @@
+discord.py==2.2.2
+black==22.6
+pyright==1.1.289
+python-dotenv
+pytz
