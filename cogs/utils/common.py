@@ -5,7 +5,6 @@ class Color:
     ERROR = 0xb00c0c
 
 
-# Credit: https://github.com/Rapptz/discord.py
 class _MissingSentinel:
     __slots__ = ()
 
