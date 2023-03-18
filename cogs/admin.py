@@ -20,7 +20,7 @@ class Admin(Cog):
 
     @commands.command(name="eval")
     async def _eval(self, ctx: Context, *, code: str):
-        """Evaluates Python code provided by the user. """
+        """Evaluates Python code provided by the user."""
         print("pass")
         pass
 

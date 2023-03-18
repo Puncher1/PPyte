@@ -1,6 +1,3 @@
-from typing import Callable
-
-import discord
 from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import Cog, Context, CommandError, errors
@@ -10,12 +7,11 @@ from .utils.dt import TIMEZONE, Datetime
 
 
 class _ErrorEmbed(Embed):
-
     def __init__(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True):
         content += "\nPlease try again." if try_again else ""
 
         if usage:
-            signature = f"{ctx.prefix}{ctx.command.qualified_name} {ctx.command.signature}"
+            signature = f"{ctx.prefix}{ctx.command.qualified_name} {ctx.command.signature}"  # type: ignore
             content += f"\n\n**Usage:**\n`{signature}`"
 
         kwargs = {
@@ -23,7 +19,7 @@ class _ErrorEmbed(Embed):
             "description": content,
         }
 
-        parent = super().__init__(**kwargs)
+        parent: Embed = super().__init__(**kwargs)  # type: ignore
         parent.set_author(name="Error")
 
 

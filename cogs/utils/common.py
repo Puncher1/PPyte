@@ -2,7 +2,7 @@ from typing import Any
 
 
 class Color:
-    ERROR = 0xb00c0c
+    ERROR = 0xB00C0C
 
 
 class _MissingSentinel:

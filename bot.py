@@ -10,15 +10,11 @@ extensions = (
 
 
 class PPyte(commands.Bot):
-
     def __init__(self):
         command_prefix = "$"
         intents = Intents().all()
 
-        super().__init__(
-            command_prefix=command_prefix,
-            intents=intents
-        )
+        super().__init__(command_prefix=command_prefix, intents=intents)
 
     async def _get_extensions(self):
         for ext in extensions:
