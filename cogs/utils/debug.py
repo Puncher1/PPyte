@@ -2,7 +2,6 @@ import sys
 
 import inspect
 from enum import Enum
-from datetime import datetime
 
 from .dt import Datetime
 
@@ -39,8 +38,7 @@ def log(msg: str, *, level: LogLevel):
     f = _Formatter
 
     dt_format = "%Y-%m-%d %H:%M:%S"
-    timezone = Datetime.get_local_datetime()
-    dt = datetime.astimezone(timezone).strftime(dt_format)
+    dt = Datetime.get_local_datetime().strftime(dt_format)
 
     level = level.value
     level_fm = "%-*s" % (8, level)
