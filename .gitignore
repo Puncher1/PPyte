@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 .idea
 
-# logs
-.log
+# log files
+log/*
