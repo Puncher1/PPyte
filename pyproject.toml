@@ -8,6 +8,7 @@ exclude = [
     "build",
     "dist",
     "venv",
+    "tests",
 ]
 reportUnnecessaryTypeIgnoreComment = "warning"
 reportUnusedImport = "error"
