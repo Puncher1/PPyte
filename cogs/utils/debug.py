@@ -29,26 +29,35 @@ class LogLevel(Enum):
 
 
 level_colors = {
-    LogLevel.INFO.value: _Formatter.INFO,
-    LogLevel.WARNING.value: _Formatter.WARNING,
-    LogLevel.ERROR.value: _Formatter.ERROR,
-    LogLevel.CRITICAL.value: _Formatter.CRITICAL,
+    LogLevel.INFO: _Formatter.INFO,
+    LogLevel.WARNING: _Formatter.WARNING,
+    LogLevel.ERROR: _Formatter.ERROR,
+    LogLevel.CRITICAL: _Formatter.CRITICAL,
 }
 
 
 def log(msg: str, *, level: LogLevel, context: str = MISSING):
+    """To print a debug information onto the console."""
     f = _Formatter
+
+    if not isinstance(level, LogLevel):
+        raise TypeError(f"level must be of type LogLevel not {level.__class__.__name__}")
+
+    level_fm = "%-*s" % (8, level.value)
+
+    if context is not MISSING:
+        if not isinstance(context, str):
+            raise TypeError("context must be a str")
+
+        context_fm = f"{f.BLUE}{context} "
+    else:
+        context_fm = ""
 
     dt_format = "%Y-%m-%d %H:%M:%S"
     dt = Datetime.get_local_datetime().strftime(dt_format)
-
-    level = level.value
-    level_fm = "%-*s" % (8, level)
 
     frame = inspect.stack()[1]
     caller = inspect.getframeinfo(frame[0])
     filename = caller.filename.split("\\")[-1]
 
-    context = f"{f.BLUE}{context} " if context is not MISSING else ""
-
-    print(f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}PPyte:{filename} {context}{f.RST}{msg}", file=sys.stderr)  # type: ignore
+    print(f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}PPyte:{filename} {context_fm}{f.RST}{msg}", file=sys.stderr)
