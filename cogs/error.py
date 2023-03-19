@@ -107,12 +107,12 @@ class ErrorHandler(commands.Cog):
 
         else:
             await self.process_ctx_error(error=error, ctx=ctx)
-            log(f"{error.__class__.__name__}: {error}", level=LogLevel.ERROR, context=f"command:{ctx.command.name}")
+            log(f"{error.__class__.__name__}: {error}", level=LogLevel.error, context=f"command:{ctx.command.name}")
 
     async def on_error(self, event: str):
         error = sys.exc_info()[1]
         await self.process_event_error(error=error, event=event)
-        log(f"{error.__class__.__name__}: {error}", level=LogLevel.ERROR, context=f"event:{event}")
+        log(f"{error.__class__.__name__}: {error}", level=LogLevel.error, context=f"event:{event}")
 
 
 async def setup(bot: PPyte):

@@ -32,17 +32,17 @@ class PPyte(commands.Bot):
             try:
                 await self.load_extension(ext)
             except Exception as e:
-                log(f"{e.__class__.__name__}: {e}", level=LogLevel.ERROR)
+                log(f"{e.__class__.__name__}: {e}", level=LogLevel.error)
                 raise e
 
     async def setup_hook(self):
         await self.init_extensions()
 
     async def on_connect(self):
-        log("Connected to Discord.", level=LogLevel.INFO)
+        log("Connected to Discord.", level=LogLevel.info)
 
     async def on_ready(self):
-        log("Ready!", level=LogLevel.INFO)
+        log("Ready!", level=LogLevel.info)
 
     # on_error doesn't applied in Cog.listener
     async def on_error(self, event: str, *args: Any, **kwargs: Any):
