@@ -2,30 +2,25 @@ from __future__ import annotations
 
 import os
 import traceback
-from typing import TYPE_CHECKING, Tuple
+import sys
+from typing import TYPE_CHECKING, Tuple, Any
 
 import discord
 from discord import Embed, File
 from discord.ext import commands
 from discord.ext.commands import errors
 
-from .utils.common import Color
+from .common import Color
 from .utils.dt import Datetime
 from .utils.debug import log, LogLevel
 
 if TYPE_CHECKING:
     from bot import PPyte
     from .utils.types import Context
+    from .utils.common import MISSING
 
 
 ERROR_LOG_CHANNEL_ID = 1086756809995468922
-
-
-def get_short_traceback(error: commands.CommandError, /) -> str:
-    """Returns a short version of the traceback."""
-
-    etype = type(error).__name__
-    return f"{etype}: {error}"
 
 
 def get_full_traceback(error: commands.CommandError, /) -> str:
@@ -63,7 +58,7 @@ class ErrorHandler(commands.Cog):
     def __init__(self, bot: PPyte):
         self.bot: PPyte = bot
 
-    def _get_log_items(self, ctx: Context, error: commands.CommandError, /) -> Tuple[str, File]:
+    def _get_log_file(self, error: commands.CommandError, /) -> File:
         dt = Datetime.get_local_datetime()
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
@@ -73,18 +68,42 @@ class ErrorHandler(commands.Cog):
             file.write(get_full_traceback(error))
 
         error_file = File(filepath, filename=filename)
+        return error_file
+
+    async def _send_to_log(self, description: str, error_file: File, /):
+        error_log_channel: discord.TextChannel = self.bot.get_channel(ERROR_LOG_CHANNEL_ID)  # type: ignore
+        await error_log_channel.send(content=description, file=error_file)
+
+        os.remove(error_file.fp.name)  # type: ignore
+
+    async def _process_ctx_error(self, *, error: Any, ctx: Context):
+        error_file = self._get_log_file(error)
         description = (
             f"**Guild:** `{ctx.guild.name}` | `{ctx.guild.id}` \n"  # type: ignore
             f"**Short Traceback** \n"
-            f"```{get_short_traceback(error)}``` \n"
+            f"```{error.__class__.__name__}: {error}``` \n"
             f"**Full Traceback**"
         )
+        await self._send_to_log(description, error_file)
 
-        return description, error_file
+        content = "**An unexpected error has occurred!** \n The full traceback has been sent to the owner."
+        embed = _ErrorEmbed(content, ctx=ctx, try_again=False, usage=False)
+
+        await ctx.send(embed=embed)
+
+    async def _process_event_error(self, *, error: Any, event: str):
+        error_file = self._get_log_file(error)
+        description = (
+            f"**Event:** `{event}` \n"  # type: ignore
+            f"**Short Traceback** \n"
+            f"```{error.__class__.__name__}: {error}``` \n"
+            f"**Full Traceback**"
+        )
+        await self._send_to_log(description, error_file)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error: commands.CommandError):
-
+        raise TypeError("test event lol")
         if isinstance(error, errors.CommandNotFound):
             return
 
@@ -95,17 +114,13 @@ class ErrorHandler(commands.Cog):
             await ctx.send(embed=embed)
 
         else:
-            description, error_file = self._get_log_items(ctx, error)
+            await self._process_ctx_error(error=error, ctx=ctx)
+            log(f"{error.__class__.__name__}: {error}", level=LogLevel.ERROR, context=f"command:{ctx.command.name}")
 
-            error_log_channel: discord.TextChannel = self.bot.get_channel(ERROR_LOG_CHANNEL_ID)  # type: ignore
-            await error_log_channel.send(content=description, file=error_file)
-            os.remove(error_file.fp.name)  # type: ignore
-
-            content = "**An unexpected error has occurred!** \n The full traceback has been sent to the owner."
-            embed = _ErrorEmbed(content, ctx=ctx, try_again=False, usage=False)
-
-            await ctx.send(embed=embed)
-            log(get_short_traceback(error), level=LogLevel.ERROR, context=f"command:{ctx.command.name}")
+    async def on_error(self, event: str):
+        error = sys.exc_info()[1]
+        await self._process_event_error(error=error, event=event)
+        log(f"{error.__class__.__name__}: {error}", level=LogLevel.ERROR, context=f"event:{event}")
 
 
 async def setup(bot: PPyte):
