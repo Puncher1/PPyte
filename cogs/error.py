@@ -93,7 +93,7 @@ class ErrorHandler(commands.Cog):
     async def _process_event_error(self, *, error: Any, event: str):
         error_file = self._get_log_file(error)
         description = (
-            f"**Event:** `{event}` \n"  # type: ignore
+            f"**Event:** `{event}` \n"
             f"**Short Traceback** \n"
             f"```{error.__class__.__name__}: {error}``` \n"
             f"**Full Traceback**"
