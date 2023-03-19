@@ -105,7 +105,7 @@ class ErrorHandler(commands.Cog):
             embed = _ErrorEmbed(content, ctx=ctx, try_again=False, usage=False)
 
             await ctx.send(embed=embed)
-            log(get_short_traceback(error), level=LogLevel.ERROR)
+            log(get_short_traceback(error), level=LogLevel.ERROR, context=f"command:{ctx.command.name}")
 
 
 async def setup(bot: PPyte):

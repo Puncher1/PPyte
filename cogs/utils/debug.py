@@ -4,6 +4,7 @@ import inspect
 from enum import Enum
 
 from .dt import Datetime
+from .common import MISSING
 
 
 class _Formatter:
@@ -14,6 +15,7 @@ class _Formatter:
 
     PURPLE = "\x1b[35m"
     GREEN = "\x1b[32m"
+    BLUE = "\x1b[34m"
 
     BOLD = "\x1b[1m"
     RST = "\x1b[0m"
@@ -34,7 +36,7 @@ level_colors = {
 }
 
 
-def log(msg: str, *, level: LogLevel):
+def log(msg: str, *, level: LogLevel, context: str = MISSING):
     f = _Formatter
 
     dt_format = "%Y-%m-%d %H:%M:%S"
@@ -47,4 +49,6 @@ def log(msg: str, *, level: LogLevel):
     caller = inspect.getframeinfo(frame[0])
     filename = caller.filename.split("\\")[-1]
 
-    print(f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}PPyte:{filename} {f.RST}{msg}", file=sys.stderr)  # type: ignore
+    context = f"{f.BLUE}{context} " if context is not MISSING else ""
+
+    print(f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}PPyte:{filename} {context}{f.RST}{msg}", file=sys.stderr)  # type: ignore
