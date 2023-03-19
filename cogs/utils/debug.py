@@ -22,17 +22,17 @@ class _Formatter:
 
 
 class LogLevel(Enum):
-    INFO = "INFO"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    CRITICAL = "CRITICAL"
+    info = "INFO"
+    warning = "WARNING"
+    error = "ERROR"
+    critical = "CRITICAL"
 
 
 level_colors = {
-    LogLevel.INFO: _Formatter.INFO,
-    LogLevel.WARNING: _Formatter.WARNING,
-    LogLevel.ERROR: _Formatter.ERROR,
-    LogLevel.CRITICAL: _Formatter.CRITICAL,
+    LogLevel.info: _Formatter.INFO,
+    LogLevel.warning: _Formatter.WARNING,
+    LogLevel.error: _Formatter.ERROR,
+    LogLevel.critical: _Formatter.CRITICAL,
 }
 
 
