@@ -10,7 +10,7 @@ from discord.ext import commands
 from discord.ext.commands import errors
 
 from .utils.common import Color
-from .utils.dt import TIMEZONE, Datetime
+from .utils.dt import Datetime
 from .utils.debug import log, LogLevel
 
 if TYPE_CHECKING:
