@@ -18,14 +18,14 @@ class PPyte(commands.Bot):
         super().__init__(command_prefix=command_prefix, intents=intents)
 
     def get_all_extensions(self) -> List[str]:
-        all_extensions = []
+        extensions = []
 
         ext_dir = f"./cogs"
         for filename in os.listdir(ext_dir):
             if filename.endswith(".py") and filename != "__init__.py":
-                all_extensions.append(f"cogs.{filename[:-3]}")
+                extensions.append(f"cogs.{filename[:-3]}")
 
-        return all_extensions
+        return extensions
 
     def get_allowed_extensions(self) -> List[str]:
         extensions = []
