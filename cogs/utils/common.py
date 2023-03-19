@@ -1,10 +1,6 @@
 from typing import Any
 
 
-class Color:
-    ERROR = 0xB00C0C
-
-
 class _MissingSentinel:
     __slots__ = ()
 
