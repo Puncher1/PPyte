@@ -1,7 +1,7 @@
 import os
 from typing import List, Any
 
-from discord import Intents
+import discord
 from discord.ext import commands
 
 from cogs.utils.debug import log, LogLevel
@@ -12,7 +12,7 @@ IGNORED_EXTENSIONS = ["!", "__init__"]
 class PPyte(commands.Bot):
     def __init__(self):
         command_prefix = "$"
-        intents = Intents().all()
+        intents = discord.Intents().all()
 
         super().__init__(command_prefix=command_prefix, intents=intents)
 

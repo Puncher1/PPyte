@@ -6,7 +6,6 @@ import sys
 from typing import TYPE_CHECKING, Any
 
 import discord
-from discord import Embed, File
 from discord.ext import commands
 from discord.ext.commands import errors
 
@@ -40,19 +39,19 @@ class ErrorHandler(commands.Cog):
     def __init__(self, bot: PPyte):
         self.bot: PPyte = bot
 
-    def get_error_embed(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True) -> Embed:
+    def get_error_embed(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True) -> discord.Embed:
         content += "\nPlease try again." if try_again else ""
 
         if usage:
             signature = f"{ctx.prefix}{ctx.command.qualified_name} {ctx.command.signature}"
             content += f"\n\n**Usage:**\n`{signature}`"
 
-        embed = Embed(color=Color.ERROR, description=content)
+        embed = discord.Embed(color=Color.ERROR, description=content)
         embed.set_author(name="Error")
 
         return embed
 
-    def get_log_file(self, error: commands.CommandError, /) -> File:
+    def get_log_file(self, error: commands.CommandError, /) -> discord.File:
         dt = Datetime.get_local_datetime()
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
@@ -61,10 +60,10 @@ class ErrorHandler(commands.Cog):
         with open(filepath, "w+") as file:
             file.write(get_full_traceback(error))
 
-        error_file = File(filepath, filename=filename)
+        error_file = discord.File(filepath, filename=filename)
         return error_file
 
-    async def send_to_log(self, description: str, error_file: File, /):
+    async def send_to_log(self, description: str, error_file: discord.File, /):
         error_log_channel: discord.TextChannel = self.bot.get_channel(ERROR_LOG_CHANNEL_ID)  # type: ignore
         await error_log_channel.send(content=description, file=error_file)
 
