@@ -7,8 +7,18 @@ if TYPE_CHECKING:
 
 
 class Color(commands.Cog):
+    info = 0x3A99DE
     error = 0xB00C0C
+
+
+class Emoji(commands.Cog):
+    x = "❌"
+
+    arrows_counterclockwise = "🔄"
+    arrow_up = "⬆️"
+    arrow_down = "⬇️"
 
 
 async def setup(bot: PPyte):
     await bot.add_cog(Color())
+    await bot.add_cog(Emoji())

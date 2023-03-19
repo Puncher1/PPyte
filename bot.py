@@ -9,6 +9,7 @@ from cogs.error import ErrorHandler
 
 IGNORED_EXTENSIONS = ["!", "__init__"]
 
+
 class PPyte(commands.Bot):
     def __init__(self):
         command_prefix = "$"
