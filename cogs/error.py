@@ -46,7 +46,7 @@ class ErrorHandler(commands.Cog):
             signature = f"{ctx.prefix}{ctx.command.qualified_name} {ctx.command.signature}"
             content += f"\n\n**Usage:**\n`{signature}`"
 
-        embed = discord.Embed(color=Color.ERROR, description=content)
+        embed = discord.Embed(color=Color.error, description=content)
         embed.set_author(name="Error")
 
         return embed

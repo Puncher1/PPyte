@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 class Color(commands.Cog):
-    ERROR = 0xB00C0C
+    error = 0xB00C0C
 
 
 async def setup(bot: PPyte):
