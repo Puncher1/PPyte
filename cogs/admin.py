@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING, List, Optional
 from enum import Enum
 
@@ -112,7 +111,7 @@ class Admin(commands.Cog):
 
     @_reload.command(name="all")
     async def _reload_all(self, ctx: Context):
-        available_extensions = self.bot.get_extensions()
+        available_extensions = self.bot.get_allowed_extensions()
 
         loaded = []
         unloaded = []
@@ -144,23 +143,13 @@ class Admin(commands.Cog):
 
         await ctx.reply(embed=embed, mention_author=True)
 
-    def get_all_extensions(self) -> List[str]:
-        all_extensions = []
-
-        ext_dir = f"./cogs"
-        for filename in os.listdir(ext_dir):
-            if filename.endswith(".py") and filename != "__init__.py":
-                all_extensions.append(f"cogs.{filename[:-3]}")
-
-        return all_extensions
-
     @commands.group(name="cogs")
     async def _cogs(self, ctx: Context):
         pass
 
     @_cogs.command(name="list")
     async def _reload_list(self, ctx: Context):
-        all_extensions = self.get_all_extensions()
+        all_extensions = self.bot.get_all_extensions()
         unloaded = [f"`{ext}`" for ext in all_extensions if ext not in self.bot.extensions]
         loaded = [f"`{ext}`" for ext in self.bot.extensions]
 

@@ -17,7 +17,17 @@ class PPyte(commands.Bot):
 
         super().__init__(command_prefix=command_prefix, intents=intents)
 
-    def get_extensions(self) -> List[str]:
+    def get_all_extensions(self) -> List[str]:
+        all_extensions = []
+
+        ext_dir = f"./cogs"
+        for filename in os.listdir(ext_dir):
+            if filename.endswith(".py") and filename != "__init__.py":
+                all_extensions.append(f"cogs.{filename[:-3]}")
+
+        return all_extensions
+
+    def get_allowed_extensions(self) -> List[str]:
         extensions = []
 
         ext_dir = f"./cogs"
@@ -28,7 +38,7 @@ class PPyte(commands.Bot):
         return extensions
 
     async def init_extensions(self):
-        extensions = self.get_extensions()
+        extensions = self.get_allowed_extensions()
         for ext in extensions:
             try:
                 await self.load_extension(ext)
