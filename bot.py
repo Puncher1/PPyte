@@ -8,8 +8,6 @@ from cogs.utils.debug import log, LogLevel
 from cogs.error import ErrorHandler
 
 IGNORED_EXTENSIONS = ["!", "__init__"]
-EXTENSION_PATHS = ["cogs"]
-
 
 class PPyte(commands.Bot):
     def __init__(self):
@@ -21,11 +19,10 @@ class PPyte(commands.Bot):
     def get_extensions(self) -> List[str]:
         extensions = []
 
-        for ext in EXTENSION_PATHS:
-            ext_dir = f"./{ext.replace('.', '/')}"
-            for filename in os.listdir(ext_dir):
-                if filename.endswith(".py") and not any(ignore in filename for ignore in IGNORED_EXTENSIONS):
-                    extensions.append(f"{ext}.{filename[:-3]}")
+        ext_dir = f"./cogs"
+        for filename in os.listdir(ext_dir):
+            if filename.endswith(".py") and not any(ignore in filename for ignore in IGNORED_EXTENSIONS):
+                extensions.append(f"cogs.{filename[:-3]}")
 
         return extensions
 
