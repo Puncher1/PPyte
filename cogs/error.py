@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import traceback
 import sys
-from typing import TYPE_CHECKING, Tuple, Any
+from typing import TYPE_CHECKING, Any
 
 import discord
 from discord import Embed, File
@@ -17,7 +17,6 @@ from .utils.debug import log, LogLevel
 if TYPE_CHECKING:
     from bot import PPyte
     from .utils.types import Context
-    from .utils.common import MISSING
 
 
 ERROR_LOG_CHANNEL_ID = 1086756809995468922
@@ -103,7 +102,6 @@ class ErrorHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error: commands.CommandError):
-        raise TypeError("test event lol")
         if isinstance(error, errors.CommandNotFound):
             return
 

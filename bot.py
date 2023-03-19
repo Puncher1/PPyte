@@ -10,6 +10,7 @@ from cogs.error import ErrorHandler
 IGNORED_EXTENSIONS = ["!", "__init__"]
 EXTENSION_PATHS = ["cogs"]
 
+
 class PPyte(commands.Bot):
     def __init__(self):
         command_prefix = "$"
