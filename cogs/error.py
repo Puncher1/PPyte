@@ -96,6 +96,7 @@ class ErrorHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error: commands.CommandError):
+        log_error = False
         if isinstance(error, errors.CommandNotFound):
             return
 
@@ -105,7 +106,12 @@ class ErrorHandler(commands.Cog):
             embed = self.get_error_embed(content, ctx=ctx)
             await ctx.send(embed=embed)
 
-        else:
+        elif isinstance(error, errors.CheckFailure):
+            if ctx.cog.qualified_name == "Admin":
+                return
+            log_error = True
+
+        if log_error:
             await self.process_ctx_error(error=error, ctx=ctx)
             log(f"{error.__class__.__name__}: {error}", level=LogLevel.error, context=f"command:{ctx.command.name}")
 
