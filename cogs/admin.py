@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import textwrap
+import traceback
+from io import StringIO
+from contextlib import redirect_stdout
 from typing import TYPE_CHECKING, List, Optional
 from enum import Enum
 
@@ -158,10 +162,59 @@ class Admin(commands.Cog):
 
         await ctx.reply(embed=embed)
 
+    async def send_eval_traceback(self, ctx: Context, *, full: bool) -> None:
+        try:
+            await ctx.message.add_reaction(Emoji.x)
+        except:
+            pass
+
+        traceback_str = traceback.format_exc()
+        if not full:
+            traceback_str = "\n".join(traceback_str.splitlines()[-3:])
+
+        await ctx.reply(f"```py\n{traceback_str}\n```")
+
     @commands.command(name="eval")
     async def _eval(self, ctx: Context, *, code: str):
         """Evaluates Python code provided by the user."""
-        raise TypeError("test lololol")
+
+        env = {
+            "discord": discord,
+            "ctx": ctx,
+            "bot": self.bot,
+            "channel": ctx.channel,
+            "guild": ctx.guild,
+            "author": ctx.author,
+        }
+        env.update(globals())
+
+        code = code.replace("```python", "").replace("```py", "").strip("```").strip("\n")
+        exec_func = f"async def __exec_func():\n{textwrap.indent(code, ' ' * 4)}"
+
+        try:
+            exec(exec_func, env)
+        except Exception:
+            return await self.send_eval_traceback(ctx, full=False)
+
+        __exec_func = env["__exec_func"]
+        output = StringIO()
+        try:
+            with redirect_stdout(output):
+                ret_val = await __exec_func()
+        except Exception:
+            return await self.send_eval_traceback(ctx, full=False)
+
+        else:
+            value = output.getvalue()
+            try:
+                await ctx.message.add_reaction(Emoji.white_check_mark)
+            except:
+                pass
+
+            if ret_val is None and value:
+                await ctx.reply(value, mention_author=False)
+            else:
+                await ctx.reply(f"{ret_val!r}", mention_author=False)
 
 
 async def setup(bot: PPyte):

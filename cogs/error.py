@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 ERROR_LOG_CHANNEL_ID = 1086756809995468922
 
 
-def get_full_traceback(error: commands.CommandError, /) -> str:
+def get_full_traceback(error: Any, /) -> str:
     """Returns the full traceback."""
 
     etype = type(error)
@@ -107,7 +107,7 @@ class ErrorHandler(commands.Cog):
             await ctx.send(embed=embed)
 
         elif isinstance(error, errors.CheckFailure):
-            if ctx.cog.qualified_name == "Admin":
+            if ctx.cog.qualified_name == "Admin":  # type: ignore
                 return
             log_error = True
 

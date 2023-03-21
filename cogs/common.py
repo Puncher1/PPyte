@@ -13,6 +13,7 @@ class Color(commands.Cog):
 
 class Emoji(commands.Cog):
     x = "❌"
+    white_check_mark = "✅"
 
     arrows_counterclockwise = "🔄"
     arrow_up = "⬆️"
