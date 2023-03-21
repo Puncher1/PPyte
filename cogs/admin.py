@@ -42,7 +42,7 @@ class Admin(commands.Cog):
         else:
             content = f"**Successfully loaded `{extension}`!**"
 
-        await ctx.reply(content, mention_author=True)
+        await ctx.reply(content, mention_author=False)
 
     @commands.command()
     async def unload(self, ctx: Context, *, extension: str):
@@ -53,7 +53,7 @@ class Admin(commands.Cog):
         else:
             content = f"**Successfully unloaded `{extension}`!**"
 
-        await ctx.reply(content, mention_author=True)
+        await ctx.reply(content, mention_author=False)
 
     @commands.group(name="reload", invoke_without_command=True)
     async def _reload(self, ctx: Context, *, extension: str):
@@ -64,7 +64,7 @@ class Admin(commands.Cog):
         else:
             content = f"**Successfully reloaded `{extension}`!**"
 
-        await ctx.reply(content, mention_author=True)
+        await ctx.reply(content, mention_author=False)
 
     async def reload_or_load_extension(self, extension: str) -> _ExtensionState:
         try:
@@ -145,14 +145,14 @@ class Admin(commands.Cog):
         embed = self.get_cogs_embed(loaded=loaded, unloaded=unloaded, reloaded=reloaded, failed=failed)
         embed.title = "Cogs Update"
 
-        await ctx.reply(embed=embed, mention_author=True)
+        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.group(name="cogs")
     async def _cogs(self, ctx: Context):
         pass
 
     @_cogs.command(name="list")
-    async def _reload_list(self, ctx: Context):
+    async def _cogs_list(self, ctx: Context):
         all_extensions = self.bot.get_all_extensions()
         unloaded = [f"`{ext}`" for ext in all_extensions if ext not in self.bot.extensions]
         loaded = [f"`{ext}`" for ext in self.bot.extensions]
@@ -160,7 +160,7 @@ class Admin(commands.Cog):
         embed = self.get_cogs_embed(loaded=loaded, unloaded=unloaded)
         embed.title = "Cogs List"
 
-        await ctx.reply(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
     async def send_eval_traceback(self, ctx: Context, *, full: bool) -> None:
         try:
