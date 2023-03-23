@@ -217,6 +217,12 @@ class Admin(commands.Cog):
             else:
                 await ctx.reply(f"{ret_val!r}", mention_author=False)
 
+    @commands.command(aliases=["s"])
+    async def shutdown(self, ctx: Context):
+        """Shuts down the bot."""
+        await ctx.message.add_reaction(Emoji.white_check_mark)
+        await self.bot.close()
+
 
 async def setup(bot: PPyte):
     await bot.add_cog(Admin(bot))
