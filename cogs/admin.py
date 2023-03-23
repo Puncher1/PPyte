@@ -211,8 +211,8 @@ class Admin(commands.Cog):
             except:
                 pass
 
-            if ret_val is None:
-                if value:
+            if ret_val in (None, ""):
+                if value not in (None, ""):
                     await ctx.reply(value, mention_author=False)
             else:
                 await ctx.reply(f"{ret_val!r}", mention_author=False)
