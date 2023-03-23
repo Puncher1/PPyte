@@ -1,4 +1,4 @@
--e ./../discord.py-1
+git+https://github.com/Rapptz/discord.py
 black==22.6
 pyright==1.1.289
 python-dotenv
