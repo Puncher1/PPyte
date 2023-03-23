@@ -193,7 +193,7 @@ class Admin(commands.Cog):
 
         try:
             exec(exec_func, env)
-        except Exception:
+        except:
             return await self.send_eval_traceback(ctx, full=False)
 
         __exec_func = env["__exec_func"]
@@ -201,7 +201,7 @@ class Admin(commands.Cog):
         try:
             with redirect_stdout(output):
                 ret_val = await __exec_func()
-        except Exception:
+        except:
             return await self.send_eval_traceback(ctx, full=False)
 
         else:
