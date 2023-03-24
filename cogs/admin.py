@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import textwrap
 import traceback
+import math
 from io import StringIO
 from contextlib import redirect_stdout
 from typing import TYPE_CHECKING, List, Optional
@@ -13,6 +14,7 @@ from discord.ext.commands import errors
 
 from .common import Color, Emoji
 from .utils.common import str_period_insert
+from .utils.dt import Datetime
 
 if TYPE_CHECKING:
     from bot import PPyte
@@ -175,6 +177,35 @@ class Admin(commands.Cog):
 
         await ctx.reply(f"```py\n{traceback_str}\n```")
 
+    def create_txt_file(self, content: str, *, large: bool = False) -> discord.File:
+        dt = Datetime.get_local_datetime()
+        dt_fm = dt.strftime("%y%m%d_%H%M%S")
+
+        filename = f"content_{dt_fm}.txt"
+        filepath = f"./log/{filename}"
+
+        if large:
+            steps = 2000
+
+            with open(filepath, "w+") as file:
+                file.write(content[:2000])
+
+            loops = math.ceil(len(content) / steps)
+
+            for i in range(0, loops):
+                start_index = i * steps
+                sub_content = content[i:i+2000]
+
+                with open(filepath, "a") as file:
+                    file.write(content[:2000])
+
+        else:
+            with open(filepath, "w+") as file:
+                file.write(content)
+
+        content_file = discord.File(filepath, filename=filename)
+        return content_file
+
     @commands.command(name="eval")
     async def _eval(self, ctx: Context, *, code: str):
         """Evaluates Python code provided by the user."""
@@ -212,11 +243,15 @@ class Admin(commands.Cog):
             except:
                 pass
 
-            if ret_val in (None, ""):
-                if value not in (None, ""):
-                    await ctx.reply(value, mention_author=False)
-            else:
-                await ctx.reply(f"{ret_val!r}", mention_author=False)
+            ret_val = f"{ret_val!r}" if ret_val is not None else None
+            content = ret_val or value
+            if content not in (None, ""):
+                if len(content) > 2000:
+                    content_file = self.create_txt_file(content, large=True)
+                    await ctx.reply(file=content_file, mention_author=False)
+                    os.remove(error_file.fp.name)  # type: ignore
+                else:
+                    await ctx.reply(content, mention_author=False)
 
     @commands.command(aliases=["s"])
     async def shutdown(self, ctx: Context):
