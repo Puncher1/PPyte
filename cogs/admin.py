@@ -260,7 +260,16 @@ class Admin(commands.Cog):
         await self.bot.close()
 
     @commands.command()
-    async def bin(self, ctx: Context, dec: int):
+    async def bin(self, ctx: Context, dec: int, bit: int = None):
+        if bit is not None:
+            dec &= (1 << bit)
+            if dec:
+                bit = 1
+            else:
+                bit = 0
+
+            return await ctx.send(f"`{bit}`")
+
         binary = bin(dec).replace("0b", "")
         binary_fm = str_period_insert(binary, " ", 4)
 

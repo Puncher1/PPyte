@@ -2,7 +2,7 @@ from typing import Any
 
 
 def str_period_insert(string: str, char: str, period: int):
-    string_list = list(reversed(list(string)))
+    string_list = list(reversed(string))
     for i, _ in enumerate(string_list):
         if (i % (period + 1)) == 0:
             string_list.insert(i, char)
