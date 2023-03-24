@@ -261,7 +261,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def bin(self, ctx: Context, dec: int):
-        binary = bin(dec).strip("0b")
+        binary = bin(dec).replace("0b", "")
         binary_fm = str_period_insert(binary, " ", 4)
 
         # binary_index = "".join(str(i) for i in reversed(range(0, len(binary))))
