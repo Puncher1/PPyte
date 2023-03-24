@@ -1,6 +1,15 @@
 from typing import Any
 
 
+def str_period_insert(string: str, char: str, period: int):
+    string_list = list(reversed(list(string)))
+    for i, _ in enumerate(string_list):
+        if (i % (period + 1)) == 0:
+            string_list.insert(i, char)
+
+    return "".join(reversed(string_list)).strip()
+
+
 class _MissingSentinel:
     __slots__ = ()
 

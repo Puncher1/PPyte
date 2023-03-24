@@ -12,6 +12,7 @@ from discord.ext import commands
 from discord.ext.commands import errors
 
 from .common import Color, Emoji
+from .utils.common import str_period_insert
 
 if TYPE_CHECKING:
     from bot import PPyte
@@ -223,6 +224,15 @@ class Admin(commands.Cog):
         await ctx.message.add_reaction(Emoji.white_check_mark)
         await self.bot.close()
 
+    @commands.command()
+    async def bin(self, ctx: Context, dec: int):
+        binary = bin(dec).strip("0b")
+        binary_fm = str_period_insert(binary, " ", 4)
+
+        # binary_index = "".join(str(i) for i in reversed(range(0, len(binary))))
+        # binary_index_fm = str_period_insert(binary_index, " ", 4)
+
+        await ctx.send(f"```{binary_fm}```")
 
 async def setup(bot: PPyte):
     await bot.add_cog(Admin(bot))
