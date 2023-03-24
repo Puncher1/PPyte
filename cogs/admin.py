@@ -77,7 +77,7 @@ class Admin(commands.Cog):
 
         return ext_state
 
-    def get_cogs_embed(
+    def create_cogs_embed(
         self,
         *,
         loaded: List[str],
@@ -143,7 +143,7 @@ class Admin(commands.Cog):
                 elif ext_state == _ExtensionState.reloaded:
                     reloaded.append(ext_str)
 
-        embed = self.get_cogs_embed(loaded=loaded, unloaded=unloaded, reloaded=reloaded, failed=failed)
+        embed = self.create_cogs_embed(loaded=loaded, unloaded=unloaded, reloaded=reloaded, failed=failed)
         embed.title = "Cogs Update"
 
         await ctx.reply(embed=embed, mention_author=False)
@@ -158,7 +158,7 @@ class Admin(commands.Cog):
         unloaded = [f"`{ext}`" for ext in all_extensions if ext not in self.bot.extensions]
         loaded = [f"`{ext}`" for ext in self.bot.extensions]
 
-        embed = self.get_cogs_embed(loaded=loaded, unloaded=unloaded)
+        embed = self.create_cogs_embed(loaded=loaded, unloaded=unloaded)
         embed.title = "Cogs List"
 
         await ctx.reply(embed=embed, mention_author=False)

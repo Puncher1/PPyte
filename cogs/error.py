@@ -39,7 +39,7 @@ class ErrorHandler(commands.Cog):
     def __init__(self, bot: PPyte):
         self.bot: PPyte = bot
 
-    def get_error_embed(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True) -> discord.Embed:
+    def create_error_embed(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True) -> discord.Embed:
         content += "\nPlease try again." if try_again else ""
 
         if usage:
@@ -51,7 +51,7 @@ class ErrorHandler(commands.Cog):
 
         return embed
 
-    def get_log_file(self, error: commands.CommandError, /) -> discord.File:
+    def create_log_file(self, error: commands.CommandError, /) -> discord.File:
         dt = Datetime.get_local_datetime()
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
@@ -70,7 +70,7 @@ class ErrorHandler(commands.Cog):
         os.remove(error_file.fp.name)  # type: ignore
 
     async def process_ctx_error(self, *, error: Any, ctx: Context):
-        error_file = self.get_log_file(error)
+        error_file = self.create_log_file(error)
         description = (
             f"**Guild:** `{ctx.guild.name}` | `{ctx.guild.id}` \n"  # type: ignore
             f"**Short Traceback** \n"
@@ -80,12 +80,12 @@ class ErrorHandler(commands.Cog):
         await self.send_to_log(description, error_file)
 
         content = "**An unexpected error has occurred!**\nThe full traceback has been sent to the owner."
-        embed = self.get_error_embed(content, ctx=ctx, try_again=False, usage=False)
+        embed = self.create_error_embed(content, ctx=ctx, try_again=False, usage=False)
 
         await ctx.send(embed=embed)
 
     async def process_event_error(self, *, error: Any, event: str):
-        error_file = self.get_log_file(error)
+        error_file = self.create_log_file(error)
         description = (
             f"**Event:** `{event}` \n"
             f"**Short Traceback** \n"
@@ -103,7 +103,7 @@ class ErrorHandler(commands.Cog):
         elif isinstance(error, errors.MissingRequiredArgument):
             content = "**A required argument is missing!**"
 
-            embed = self.get_error_embed(content, ctx=ctx)
+            embed = self.create_error_embed(content, ctx=ctx)
             await ctx.send(embed=embed)
 
         elif isinstance(error, errors.CheckFailure):
