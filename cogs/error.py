@@ -111,6 +111,9 @@ class ErrorHandler(commands.Cog):
                 return
             log_error = True
 
+        else:
+            log_error = True
+
         if log_error:
             await self.process_ctx_error(error=error, ctx=ctx)
             log(f"{error.__class__.__name__}: {error}", level=LogLevel.error, context=f"command:{ctx.command.name}")
