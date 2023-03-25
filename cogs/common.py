@@ -20,6 +20,10 @@ class Emoji(commands.Cog):
     arrow_down = "⬇️"
 
 
+class GuildID(commands.Cog):
+    dev_test = 673600173615611913
+
+
 async def setup(bot: PPyte):
     await bot.add_cog(Color())
     await bot.add_cog(Emoji())

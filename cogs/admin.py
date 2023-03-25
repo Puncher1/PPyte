@@ -15,10 +15,14 @@ from discord.ext.commands import errors
 from .common import Color, Emoji
 from .utils.common import str_period_insert
 from .utils.dt import Datetime
+from .common import GuildID
 
 if TYPE_CHECKING:
     from bot import PPyte
     from .utils.types import Context
+
+
+DEV_TEST_GUILD_ID = GuildID.dev_test
 
 
 class _ExtensionState(Enum):
@@ -194,7 +198,7 @@ class Admin(commands.Cog):
 
             for i in range(0, loops):
                 start_index = i * steps
-                sub_content = content[i:i+2000]
+                sub_content = content[i : i + 2000]
 
                 with open(filepath, "a") as file:
                     file.write(content[:2000])
@@ -260,9 +264,17 @@ class Admin(commands.Cog):
         await self.bot.close()
 
     @commands.command()
-    async def bin(self, ctx: Context, dec: int, bit: int = None):
+    async def sync(self, ctx: Context, guild: Optional[discord.Guild] = None):
+        if guild is None:
+            guild = discord.Object(DEV_TEST_GUILD_ID)  # type: ignore
+
+        await self.bot.tree.sync(guild=guild)
+        await ctx.reply("Done!", mention_author=False)
+
+    @commands.command()
+    async def bin(self, ctx: Context, dec: int, bit: Optional[int] = None):
         if bit is not None:
-            dec &= (1 << bit)
+            dec &= 1 << bit
             if dec:
                 bit = 1
             else:
@@ -277,6 +289,7 @@ class Admin(commands.Cog):
         # binary_index_fm = str_period_insert(binary_index, " ", 4)
 
         await ctx.send(f"```{binary_fm}```")
+
 
 async def setup(bot: PPyte):
     await bot.add_cog(Admin(bot))

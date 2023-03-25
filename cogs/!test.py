@@ -2,12 +2,18 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import discord
 from discord.ext import commands
+from discord import app_commands
 
 from .utils.types import Context
+from .common import GuildID
 
 if TYPE_CHECKING:
     from main import PPyte
+
+
+DEV_TEST_GUILD_ID = GuildID.dev_test
 
 
 class APITests(commands.Cog):
@@ -24,13 +30,11 @@ class APITests(commands.Cog):
         await ctx.reply("ctx.reply")
         pass
 
-    @commands.hybrid_command(name="delete_thread", description="Deletes a thread")
-    async def delete_thread(self, ctx, thread_id: int):
-        thread = ctx.channel.get_thread(thread_id)
-        if thread is None:
-            thread = await ctx.guild.fetch_channel(thread_id)
+    @app_commands.command(name="ephemeral")
+    @app_commands.guilds(DEV_TEST_GUILD_ID)
+    async def _ephemeral(self, interaction: discord.Interaction):
+        await interaction.response.send_message("Command", ephemeral=True)
 
-        await thread.delete()
 
 async def setup(bot: PPyte):
     await bot.add_cog(APITests(bot))
