@@ -24,5 +24,13 @@ class APITests(commands.Cog):
         await ctx.reply("ctx.reply")
         pass
 
+    @commands.hybrid_command(name="delete_thread", description="Deletes a thread")
+    async def delete_thread(self, ctx, thread_id: int):
+        thread = ctx.channel.get_thread(thread_id)
+        if thread is None:
+            thread = await ctx.guild.fetch_channel(thread_id)
+
+        await thread.delete()
+
 async def setup(bot: PPyte):
     await bot.add_cog(APITests(bot))
