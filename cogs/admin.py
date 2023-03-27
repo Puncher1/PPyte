@@ -254,7 +254,7 @@ class Admin(commands.Cog):
                 if len(content) > 2000:
                     content_file = self.create_txt_file(content, large=True)
                     await ctx.reply(file=content_file, mention_author=False)
-                    os.remove(error_file.fp.name)  # type: ignore
+                    os.remove(content_file.fp.name)  # type: ignore
                 else:
                     await ctx.reply(content, mention_author=False)
 
