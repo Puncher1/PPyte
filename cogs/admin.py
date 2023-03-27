@@ -3,6 +3,7 @@ from __future__ import annotations
 import textwrap
 import traceback
 import math
+import os
 from io import StringIO
 from contextlib import redirect_stdout
 from typing import TYPE_CHECKING, List, Optional
