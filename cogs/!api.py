@@ -35,6 +35,9 @@ class APITests(commands.Cog):
     async def _ephemeral(self, interaction: discord.Interaction):
         await interaction.response.send_message("Command", ephemeral=True)
 
+    @commands.Cog.listener()
+    async def on_voice_channel_effect(self, channel: discord.VoiceChannel, effect: discord.VoiceChannelEffect):
+        print(channel, effect)
 
 async def setup(bot: PPyte):
     await bot.add_cog(APITests(bot))

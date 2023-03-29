@@ -58,3 +58,19 @@ class PPyte(commands.Bot):
     # on_error doesn't applied in Cog.listener
     async def on_error(self, event: str, *args: Any, **kwargs: Any):
         await ErrorHandler(self).on_error(event=event)
+
+    async def on_message(self, message: discord.Message):
+        await self.process_commands(message)
+
+    # TODO: remove; for testing burst reactions
+    # async def on_raw_reaction_add(self, payload):
+    #     print(f"raw_reaction_add {payload=}")
+    #
+    # async def on_reaction_add(self, reaction, user):
+    #     print(f"reaction_add {reaction.burst=}, {reaction.count_details=}, {reaction.burst_colours=}")
+    #
+    # async def on_raw_reaction_remove(self, payload):
+    #     print(f"raw_reaction_add {payload=}")
+    #
+    # async def on_reaction_remove(self, reaction, user):
+    #     print(f"reaction_remove {reaction.burst=}, {reaction.count_details=}, {reaction.burst_colours=}")
