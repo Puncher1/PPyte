@@ -61,6 +61,6 @@ def log(msg: str, *, level: LogLevel, context: str = MISSING):
     filename = caller.filename.split("\\")[-1]
 
     print(
-        f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}PPyte:{filename} {context_fm}{f.RST}{msg}",
+        f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}Punchax:{filename} {context_fm}{f.RST}{msg}",
         file=sys.stderr,
     )

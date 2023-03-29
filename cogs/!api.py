@@ -10,7 +10,7 @@ from .utils.types import Context
 from .common import GuildID
 
 if TYPE_CHECKING:
-    from main import PPyte
+    from main import Punchax
 
 
 DEV_TEST_GUILD_ID = GuildID.dev_test
@@ -21,8 +21,8 @@ class APITests(commands.Cog):
     This cog is not loaded on startup and has to be loaded with the `load` command
     """
 
-    def __int__(self, bot: PPyte):
-        self.bot: PPyte = bot
+    def __int__(self, bot: Punchax):
+        self.bot: Punchax = bot
 
     @commands.command()
     async def reply_overload(self, ctx: Context):
@@ -39,5 +39,5 @@ class APITests(commands.Cog):
     async def on_voice_channel_effect(self, channel: discord.VoiceChannel, effect: discord.VoiceChannelEffect):
         print(channel, effect)
 
-async def setup(bot: PPyte):
+async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))

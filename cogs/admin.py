@@ -19,7 +19,7 @@ from .utils.dt import Datetime
 from .common import GuildID
 
 if TYPE_CHECKING:
-    from bot import PPyte
+    from bot import Punchax
     from .utils.types import Context
 
 
@@ -35,8 +35,8 @@ class _ExtensionState(Enum):
 class Admin(commands.Cog):
     """Admin-only commands which only can be used by the owner."""
 
-    def __init__(self, bot: PPyte):
-        self.bot: PPyte = bot
+    def __init__(self, bot: Punchax):
+        self.bot: Punchax = bot
 
     async def cog_check(self, ctx: Context) -> bool:
         return await self.bot.is_owner(ctx.author)
@@ -290,5 +290,5 @@ class Admin(commands.Cog):
         await ctx.send(f"```{binary_fm}```")
 
 
-async def setup(bot: PPyte):
+async def setup(bot: Punchax):
     await bot.add_cog(Admin(bot))

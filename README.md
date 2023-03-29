@@ -1,4 +1,4 @@
-# PPyte
+# Punchax
 My personal assistant on Discord. <br>
 A few parts of the code are inspired by [Rapptz](https://github.com/Rapptz/) ' personal bot [RoboDanny](https://github.com/Rapptz/RoboDanny).
 ### Library

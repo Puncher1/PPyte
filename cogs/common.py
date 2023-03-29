@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from discord.ext import commands
 
 if TYPE_CHECKING:
-    from bot import PPyte
+    from bot import Punchax
 
 
 class Color(commands.Cog):
@@ -24,6 +24,6 @@ class GuildID(commands.Cog):
     dev_test = 673600173615611913
 
 
-async def setup(bot: PPyte):
+async def setup(bot: Punchax):
     await bot.add_cog(Color())
     await bot.add_cog(Emoji())

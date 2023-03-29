@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 
 if TYPE_CHECKING:
-    from bot import PPyte
+    from bot import Punchax
 
 
 class Context(commands.Context):
@@ -21,7 +21,7 @@ class Context(commands.Context):
     ]
     command: commands.Command
     prefix: str
-    bot: PPyte
+    bot: Punchax
 
 
 class GuildContext(Context):

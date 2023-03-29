@@ -14,7 +14,7 @@ from .utils.dt import Datetime
 from .utils.debug import log, LogLevel
 
 if TYPE_CHECKING:
-    from bot import PPyte
+    from bot import Punchax
     from .utils.types import Context
 
 
@@ -36,8 +36,8 @@ def get_full_traceback(error: Any, /) -> str:
 class ErrorHandler(commands.Cog):
     """Handles command errors globally."""
 
-    def __init__(self, bot: PPyte):
-        self.bot: PPyte = bot
+    def __init__(self, bot: Punchax):
+        self.bot: Punchax = bot
 
     def create_error_embed(self, content: str, *, ctx: Context, try_again: bool = True, usage: bool = True) -> discord.Embed:
         content += "\nPlease try again." if try_again else ""
@@ -124,5 +124,5 @@ class ErrorHandler(commands.Cog):
         log(f"{error.__class__.__name__}: {error}", level=LogLevel.error, context=f"event:{event}")
 
 
-async def setup(bot: PPyte):
+async def setup(bot: Punchax):
     await bot.add_cog(ErrorHandler(bot))
