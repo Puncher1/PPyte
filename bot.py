@@ -13,7 +13,7 @@ IGNORED_EXTENSIONS = ["!", "__init__"]
 class PPyte(commands.Bot):
     def __init__(self):
         command_prefix = "$"
-        intents = discord.Intents().all()
+        intents = discord.Intents.all()
 
         super().__init__(command_prefix=command_prefix, intents=intents)
 
