@@ -286,9 +286,6 @@ class Admin(commands.Cog):
         binary = bin(dec).replace("0b", "")
         binary_fm = str_period_insert(binary, " ", 4)
 
-        # binary_index = "".join(str(i) for i in reversed(range(0, len(binary))))
-        # binary_index_fm = str_period_insert(binary_index, " ", 4)
-
         await ctx.send(f"```{binary_fm}```")
 
 
