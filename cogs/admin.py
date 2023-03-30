@@ -180,7 +180,12 @@ class Admin(commands.Cog):
         if not full:
             traceback_str = "\n".join(traceback_str.splitlines()[-3:])
 
-        await ctx.reply(f"```py\n{traceback_str}\n```")
+        if len(traceback_str) > 2000:
+            error_file = self.create_txt_file(traceback_str, large=True)
+            await ctx.reply(file=error_file, mention_author=False)
+            os.remove(error_file.fp.name)  # type: ignore
+        else:
+            await ctx.reply(f"```py\n{traceback_str}\n```")
 
     def create_txt_file(self, content: str, *, large: bool = False) -> discord.File:
         dt = Datetime.get_local_datetime()
@@ -239,7 +244,7 @@ class Admin(commands.Cog):
             with redirect_stdout(output):
                 ret_val = await __exec_func()
         except:
-            return await self.send_eval_traceback(ctx, full=False)
+            return await self.send_eval_traceback(ctx, full=True)
 
         else:
             value = output.getvalue()
