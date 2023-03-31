@@ -39,5 +39,6 @@ class APITests(commands.Cog):
     async def on_voice_channel_effect(self, channel: discord.VoiceChannel, effect: discord.VoiceChannelEffect):
         print(channel, effect)
 
+
 async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))

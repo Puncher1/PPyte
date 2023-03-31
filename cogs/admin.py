@@ -205,7 +205,7 @@ class Admin(commands.Cog):
 
             for i in range(1, loops):
                 start_index = i * steps
-                sub_content = content[start_index:start_index+2000]
+                sub_content = content[start_index : start_index + 2000]
 
                 with open(filepath, "a") as file:
                     file.write(sub_content)
@@ -269,7 +269,7 @@ class Admin(commands.Cog):
                 elif len(content) > 2000:
                     embed = discord.Embed(color=0xFFFFFF, description=f"```json\n{content}\n```")
                     await ctx.reply(embed=embed, mention_author=False)
-                    
+
                 else:
                     await ctx.reply(f"```json\n{content}\n```", mention_author=False)
 
