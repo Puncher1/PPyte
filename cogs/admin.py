@@ -312,6 +312,13 @@ class Admin(commands.Cog):
 
         await ctx.send(f"```{binary_fm}```")
 
+    @commands.command(name="len")
+    async def _len(self, ctx: Context, *, body: str):
+        if body.startswith("r "):
+            body = body.replace("r ", "").replace(" ", "")
+
+        await ctx.reply(str(len(body)), mention_author=False)
+
 
 async def setup(bot: Punchax):
     await bot.add_cog(Admin(bot))
