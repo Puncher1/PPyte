@@ -24,7 +24,6 @@ if TYPE_CHECKING:
     from bot import Punchax
     from .utils.types import Context
 
-
 DEV_TEST_GUILD_ID = GuildID.dev_test
 
 
@@ -204,12 +203,12 @@ class Admin(commands.Cog):
 
             loops = math.ceil(len(content) / steps)
 
-            for i in range(0, loops):
+            for i in range(1, loops):
                 start_index = i * steps
-                sub_content = content[i : i + 2000]
+                sub_content = content[start_index:start_index+2000]
 
                 with open(filepath, "a") as file:
-                    file.write(content[:2000])
+                    file.write(sub_content)
 
         else:
             with open(filepath, "w+") as file:
