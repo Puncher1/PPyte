@@ -260,10 +260,16 @@ class Admin(commands.Cog):
             if content not in (None, ""):
                 content = ast.literal_eval(content)
                 content = json.dumps(content, indent=4, sort_keys=True)
-                if len(content) > 2000:
+
+                if len(content) > 4096:
                     content_file = self.create_txt_file(content, large=True)
                     await ctx.reply(file=content_file, mention_author=False)
                     os.remove(content_file.fp.name)  # type: ignore
+
+                elif len(content) > 2000:
+                    embed = discord.Embed(color=0xFFFFFF, description=f"```json\n{content}\n```")
+                    await ctx.reply(embed=embed, mention_author=False)
+                    
                 else:
                     await ctx.reply(f"```json\n{content}\n```", mention_author=False)
 
