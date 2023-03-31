@@ -6,5 +6,4 @@ The library I use is [discord.py](https://github.com/Rapptz/discord.py), <i>a mo
 
 
 ## License 
-I don't want you to run a copy of the bot.<br>
-However, you're allowed to use the code for educational purposes (no guarantee 😄).
+You're allowed to use the code for educational purposes (no guarantee 😄).
