@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, List, Optional
 from enum import Enum
 
 import discord
+from discord import ui
 from discord.ext import commands
 from discord.ext.commands import errors
 
@@ -31,6 +32,11 @@ class _ExtensionState(Enum):
     loaded = 0
     unloaded = 1
     reloaded = 2
+
+
+class BtnRemoveEmbed(ui.Button):
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.message.edit(embed=None, content="*Original embed message has been deleted*", view=None)  # type: ignore
 
 
 class Admin(commands.Cog):
@@ -267,8 +273,11 @@ class Admin(commands.Cog):
                     os.remove(content_file.fp.name)  # type: ignore
 
                 elif len(content) > 2000:
+                    btn_remove = BtnRemoveEmbed(emoji=Emoji.x)
+                    view = ui.View().add_item(btn_remove)
+
                     embed = discord.Embed(color=0xFFFFFF, description=f"```json\n{content}\n```")
-                    await ctx.reply(embed=embed, mention_author=False)
+                    await ctx.reply(embed=embed, view=view, mention_author=False)
 
                 else:
                     await ctx.reply(f"```json\n{content}\n```", mention_author=False)
