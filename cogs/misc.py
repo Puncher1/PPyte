@@ -34,7 +34,7 @@ class Misc(commands.Cog):
         if options == "admin":
             perms = "8"
 
-        url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions={perms}&scope=bot"  # type
+        url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions={perms}&scope=bot"  # type ignore
         await ctx.send(url)
 
 

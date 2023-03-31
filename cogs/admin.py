@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import ast
+import json
 import textwrap
 import traceback
 import math
@@ -257,12 +259,14 @@ class Admin(commands.Cog):
             content = ret_val or value
             content = content.strip("'")
             if content not in (None, ""):
+                content = ast.literal_eval(content)
+                content = json.dumps(content, indent=4, sort_keys=True)
                 if len(content) > 2000:
                     content_file = self.create_txt_file(content, large=True)
                     await ctx.reply(file=content_file, mention_author=False)
                     os.remove(content_file.fp.name)  # type: ignore
                 else:
-                    await ctx.reply(content, mention_author=False)
+                    await ctx.reply(f"```json\n{content}\n```", mention_author=False)
 
     @commands.command(aliases=["s"])
     async def shutdown(self, ctx: Context):
