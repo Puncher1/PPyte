@@ -65,7 +65,7 @@ class Admin(commands.Cog):
 
         await ctx.reply(content, mention_author=False)
 
-    @commands.group(name="reload", invoke_without_command=True)
+    @commands.group(name="reload", aliases=["r"], invoke_without_command=True)
     async def _reload(self, ctx: Context, *, extension: str):
         try:
             await self.bot.reload_extension(extension)
