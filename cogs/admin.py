@@ -48,8 +48,11 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx: Context) -> bool:
         return await self.bot.is_owner(ctx.author)
 
-    @commands.command()
+    @commands.command(aliases=["l"])
     async def load(self, ctx: Context, *, extension: str):
+        if not extension.startswith("cogs."):
+            extension = f"cogs.{extension}"
+
         try:
             await self.bot.load_extension(extension)
         except Exception as e:
@@ -61,6 +64,9 @@ class Admin(commands.Cog):
 
     @commands.command()
     async def unload(self, ctx: Context, *, extension: str):
+        if not extension.startswith("cogs."):
+            extension = f"cogs.{extension}"
+
         try:
             await self.bot.unload_extension(extension)
         except Exception as e:
@@ -72,6 +78,9 @@ class Admin(commands.Cog):
 
     @commands.group(name="reload", aliases=["r"], invoke_without_command=True)
     async def _reload(self, ctx: Context, *, extension: str):
+        if not extension.startswith("cogs."):
+            extension = f"cogs.{extension}"
+
         try:
             await self.bot.reload_extension(extension)
         except Exception as e:
