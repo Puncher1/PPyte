@@ -33,7 +33,6 @@ class Punchax(commands.Bot):
         extensions = []
 
         for ext_dir in EXTENSIONS_DIRS:
-            print(ext_dir)
             for filename in os.listdir(ext_dir):
                 if filename.endswith(".py") and not any(ignore in filename for ignore in IGNORED_EXTENSIONS):
                     ext_dir = ext_dir.replace("./", "").replace("/", ".")
