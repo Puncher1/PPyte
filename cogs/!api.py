@@ -39,6 +39,9 @@ class APITests(commands.Cog):
     async def on_voice_channel_effect(self, channel: discord.VoiceChannel, effect: discord.VoiceChannelEffect):
         print(channel, effect)
 
+    @commands.Cog.listener()
+    async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
+        print(f"Action: {entry.action}, Extra: {entry.extra}, Changes: {entry.changes}, Target: {entry.target}")
 
 async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))
