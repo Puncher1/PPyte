@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-from .utils.types import Context
+from utils.types import Context
 from .common import GuildID
 
 if TYPE_CHECKING:
@@ -42,6 +42,7 @@ class APITests(commands.Cog):
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
         print(f"Action: {entry.action}, Extra: {entry.extra}, Changes: {entry.changes}, Target: {entry.target}")
+
 
 async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))

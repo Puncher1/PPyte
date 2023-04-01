@@ -1,4 +1,4 @@
-from cogs.utils.debug import log, LogLevel
+from utils import log, LogLevel
 
 
 log("This is an info", level=LogLevel.info, context="test:test_debug")

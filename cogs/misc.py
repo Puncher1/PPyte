@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from discord.ext import commands
 
-from .utils.types import Context
+from utils.types import Context
 
 if TYPE_CHECKING:
     from bot import Punchax

@@ -17,13 +17,13 @@ from discord.ext import commands
 from discord.ext.commands import errors
 
 from .common import Color, Emoji
-from .utils.common import str_period_insert
-from .utils.dt import Datetime
+from utils.common import str_period_insert
+from utils.dt import Datetime
 from .common import GuildID
 
 if TYPE_CHECKING:
     from bot import Punchax
-    from .utils.types import Context
+    from utils.types import Context
 
 DEV_TEST_GUILD_ID = GuildID.dev_test
 

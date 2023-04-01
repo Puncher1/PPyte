@@ -10,12 +10,12 @@ from discord.ext import commands
 from discord.ext.commands import errors
 
 from .common import Color
-from .utils.dt import Datetime
-from .utils.debug import log, LogLevel
+from utils.dt import Datetime
+from utils.debug import log, LogLevel
 
 if TYPE_CHECKING:
     from bot import Punchax
-    from .utils.types import Context
+    from utils.types import Context
 
 
 ERROR_LOG_CHANNEL_ID = 1086756809995468922

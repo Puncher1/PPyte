@@ -4,10 +4,11 @@ from typing import List, Any
 import discord
 from discord.ext import commands
 
-from cogs.utils.debug import log, LogLevel
+from utils.debug import log, LogLevel
 from cogs.error import ErrorHandler
 
 IGNORED_EXTENSIONS = ["!", "__init__"]
+EXTENSIONS_DIRS = ["./cogs", "./cogs/minigames"]
 
 
 class Punchax(commands.Bot):
@@ -20,20 +21,23 @@ class Punchax(commands.Bot):
     def get_all_extensions(self) -> List[str]:
         extensions = []
 
-        ext_dir = f"./cogs"
-        for filename in os.listdir(ext_dir):
-            if filename.endswith(".py") and filename != "__init__.py":
-                extensions.append(f"cogs.{filename[:-3]}")
+        for ext_dir in EXTENSIONS_DIRS:
+            for filename in os.listdir(ext_dir):
+                if filename.endswith(".py") and filename != "__init__.py":
+                    ext_dir = ext_dir.replace("./", "").replace("/", ".")
+                    extensions.append(f"{ext_dir}.{filename[:-3]}")
 
         return extensions
 
     def get_allowed_extensions(self) -> List[str]:
         extensions = []
 
-        ext_dir = f"./cogs"
-        for filename in os.listdir(ext_dir):
-            if filename.endswith(".py") and not any(ignore in filename for ignore in IGNORED_EXTENSIONS):
-                extensions.append(f"cogs.{filename[:-3]}")
+        for ext_dir in EXTENSIONS_DIRS:
+            print(ext_dir)
+            for filename in os.listdir(ext_dir):
+                if filename.endswith(".py") and not any(ignore in filename for ignore in IGNORED_EXTENSIONS):
+                    ext_dir = ext_dir.replace("./", "").replace("/", ".")
+                    extensions.append(f"{ext_dir}.{filename[:-3]}")
 
         return extensions
 
