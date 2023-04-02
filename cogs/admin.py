@@ -273,8 +273,12 @@ class Admin(commands.Cog):
             content = ret_val or value
             content = content.strip("'")
             if content not in (None, ""):
-                content = ast.literal_eval(content)
-                content = json.dumps(content, indent=4, sort_keys=True)
+                try:
+                    content = ast.literal_eval(content)
+                except:
+                    pass
+                else:
+                    content = json.dumps(content, indent=4, sort_keys=True)
 
                 if len(content) > 4096:
                     content_file = self.create_txt_file(content, large=True)
