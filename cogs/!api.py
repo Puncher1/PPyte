@@ -36,8 +36,8 @@ class APITests(commands.Cog):
         await interaction.response.send_message("Command", ephemeral=True)
 
     @commands.Cog.listener()
-    async def on_voice_channel_effect(self, channel: discord.VoiceChannel, effect: discord.VoiceChannelEffect):
-        print(channel, effect)
+    async def on_voice_channel_effect(self, effect: discord.VoiceChannelEffect):
+        print(effect)
 
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
