@@ -9,7 +9,7 @@ import os
 import re
 from io import StringIO
 from contextlib import redirect_stdout
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List, Optional, Literal
 from enum import Enum
 
 import discord
@@ -251,6 +251,11 @@ class Admin(commands.Cog):
         }
         env.update(globals())
 
+        is_json = False
+        if code.startswith("json"):
+            code = code.replace("json", "").strip("\n").strip()
+            is_json = True
+
         code = code.replace("```python", "").replace("```py", "").strip("```").strip("\n")
         exec_func = f"async def __exec_func():\n{textwrap.indent(code, ' ' * 4)}"
 
@@ -278,12 +283,15 @@ class Admin(commands.Cog):
             content = ret_val or value
             content = content.strip("'")
             if content not in (None, ""):
-                try:
-                    content = ast.literal_eval(content)
-                except:
-                    pass
-                else:
-                    content = json.dumps(content, indent=4, sort_keys=True)
+                lang: Literal["python", "json"] = "python"
+                if is_json:
+                    lang = "json"
+                    try:
+                        content = ast.literal_eval(content)
+                    except:
+                        pass
+                    else:
+                        content = json.dumps(content, indent=4, sort_keys=True)
 
                 if len(content) > 4096:
                     content_file = self.create_txt_file(content, large=True)
@@ -294,12 +302,12 @@ class Admin(commands.Cog):
                     btn_remove = BtnRemoveEmbed(emoji=Emoji.x)
                     view = ui.View().add_item(btn_remove)
 
-                    embed = discord.Embed(color=Color.main, description=f"```json\n{content}\n```")
+                    embed = discord.Embed(color=Color.main, description=f"```{lang}\n{content}\n```")
                     await ctx.reply(embed=embed, view=view, mention_author=False)
 
                 else:
                     if re.match(REGEX_URL_PATTERN, content) is None:
-                        await ctx.reply(f"```json\n{content}\n```", mention_author=False)
+                        await ctx.reply(f"```{lang}\n{content}\n```", mention_author=False)
                     else:
                         is_image = False
                         if "cdn.discordapp.com" in content:
@@ -307,7 +315,7 @@ class Admin(commands.Cog):
 
                         if is_image:
                             embed = discord.Embed(color=Color.main, description=content)
-                            embed.set_image(url=content)  if is_image else None
+                            embed.set_image(url=content) if is_image else None
                             await ctx.reply(embed=embed, mention_author=False)
                         else:
                             await ctx.reply(content, mention_author=False)
