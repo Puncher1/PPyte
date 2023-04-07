@@ -6,6 +6,7 @@ import textwrap
 import traceback
 import math
 import os
+import re
 from io import StringIO
 from contextlib import redirect_stdout
 from typing import TYPE_CHECKING, List, Optional
@@ -26,6 +27,10 @@ if TYPE_CHECKING:
     from utils.types import Context
 
 DEV_TEST_GUILD_ID = GuildID.dev_test
+
+REGEX_URL_PATTERN = (
+    "^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$"
+)
 
 
 class _ExtensionState(Enum):
@@ -289,11 +294,23 @@ class Admin(commands.Cog):
                     btn_remove = BtnRemoveEmbed(emoji=Emoji.x)
                     view = ui.View().add_item(btn_remove)
 
-                    embed = discord.Embed(color=0xFFFFFF, description=f"```json\n{content}\n```")
+                    embed = discord.Embed(color=Color.main, description=f"```json\n{content}\n```")
                     await ctx.reply(embed=embed, view=view, mention_author=False)
 
                 else:
-                    await ctx.reply(f"```json\n{content}\n```", mention_author=False)
+                    if re.match(REGEX_URL_PATTERN, content) is None:
+                        await ctx.reply(f"```json\n{content}\n```", mention_author=False)
+                    else:
+                        is_image = False
+                        if "cdn.discordapp.com" in content:
+                            is_image = True
+
+                        if is_image:
+                            embed = discord.Embed(color=Color.main, description=content)
+                            embed.set_image(url=content)  if is_image else None
+                            await ctx.reply(embed=embed, mention_author=False)
+                        else:
+                            await ctx.reply(content, mention_author=False)
 
     @commands.command(aliases=["s"])
     async def shutdown(self, ctx: Context):
