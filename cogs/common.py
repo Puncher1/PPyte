@@ -7,6 +7,8 @@ if TYPE_CHECKING:
 
 
 class Color(commands.Cog):
+    main = 0xFFFFFF
+
     info = 0x3A99DE
     error = 0xB00C0C
 
