@@ -57,7 +57,7 @@ class ErrorHandler(commands.Cog):
 
         filename = f"error_{dt_fm}.txt"
         filepath = f"./log/{filename}"
-        with open(filepath, "w+") as file:
+        with open(filepath, "w+", encoding="utf-8") as file:
             file.write(get_full_traceback(error))
 
         error_file = discord.File(filepath, filename=filename)

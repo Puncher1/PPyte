@@ -218,7 +218,7 @@ class Admin(commands.Cog):
         if large:
             steps = 2000
 
-            with open(filepath, "w+") as file:
+            with open(filepath, "w+", encoding="utf-8") as file:
                 file.write(content[:2000])
 
             loops = math.ceil(len(content) / steps)
@@ -227,11 +227,11 @@ class Admin(commands.Cog):
                 start_index = i * steps
                 sub_content = content[start_index : start_index + 2000]
 
-                with open(filepath, "a") as file:
+                with open(filepath, "a", encoding="utf-8") as file:
                     file.write(sub_content)
 
         else:
-            with open(filepath, "w+") as file:
+            with open(filepath, "w+", encoding="utf-8") as file:
                 file.write(content)
 
         content_file = discord.File(filepath, filename=filename)
