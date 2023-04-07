@@ -56,7 +56,7 @@ class ErrorHandler(commands.Cog):
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
         filename = f"error_{dt_fm}.txt"
-        filepath = f"./log/{filename}"
+        filepath = f"./temp/{filename}"
         with open(filepath, "w+", encoding="utf-8") as file:
             file.write(get_full_traceback(error))
 

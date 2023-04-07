@@ -213,7 +213,7 @@ class Admin(commands.Cog):
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
         filename = f"content_{dt_fm}.txt"
-        filepath = f"./log/{filename}"
+        filepath = f"./temp/{filename}"
 
         if large:
             steps = 2000
