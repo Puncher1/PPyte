@@ -58,7 +58,7 @@ class Punchax(commands.Bot):
     async def on_ready(self):
         log("Ready!", level=LogLevel.info)
 
-    # on_error doesn't applied in Cog.listener
+    # on_error isn't applied in Cog.listener
     async def on_error(self, event: str, *args: Any, **kwargs: Any):
         await ErrorHandler(self).on_error(event=event)
 
