@@ -281,7 +281,8 @@ class Admin(commands.Cog):
 
             ret_val = f"{ret_val!r}" if ret_val is not None else None
             content = ret_val or value
-            content = content.strip("'")
+            if not content.startswith("b'"):
+                content = content.strip("'")
             if content not in (None, ""):
                 lang: Literal["python", "json"] = "python"
                 if is_json:
