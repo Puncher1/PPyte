@@ -253,7 +253,7 @@ class Admin(commands.Cog):
 
         is_json = False
         if code.startswith("json"):
-            code = code.replace("json", "").strip("\n").strip()
+            code = code.replace("json", "", 1).strip("\n").strip()
             is_json = True
 
         code = code.replace("```python", "").replace("```py", "").strip("```").strip("\n")
@@ -353,7 +353,7 @@ class Admin(commands.Cog):
     @commands.command(name="len")
     async def _len(self, ctx: Context, *, body: str):
         if body.startswith("r "):
-            body = body.replace("r ", "").replace(" ", "")
+            body = body.replace("r ", "", 1).replace(" ", "")
 
         await ctx.reply(str(len(body)), mention_author=False)
 
