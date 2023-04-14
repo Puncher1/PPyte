@@ -30,6 +30,10 @@ class APITests(commands.Cog):
         await ctx.reply("ctx.reply")
         pass
 
+    @commands.command()
+    async def automodruleaction_overload(self, ctx: Context):
+        rule_action = discord.AutoModRuleAction(type=discord.AutoModRuleActionType.block_message, channel_id=123)
+
     @app_commands.command(name="ephemeral")
     @app_commands.guilds(DEV_TEST_GUILD_ID)
     async def _ephemeral(self, interaction: discord.Interaction):
@@ -37,7 +41,11 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_channel_effect(self, effect: discord.VoiceChannelEffect):
-        print(effect)
+        if effect.is_sound():
+            default = await effect.sound.is_default()
+        else:
+            default = None
+        print(effect, default, effect.sound.id)
 
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
@@ -45,8 +53,37 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
+        print(interaction.channel_id)
         print(interaction.channel)
 
+    @commands.Cog.listener()
+    async def on_user_update(self, before: discord.User, after: discord.User):
+        print(f"USER_UPDATE")
+        print(before != after)
+        print(f"Avatar: {before.avatar}, {after.avatar}")
+        print(f"Avatar Decoration: {before.avatar_decoration}, {after.avatar_decoration}")
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before: discord.Member, after: discord.Member):
+        if before.guild.id == DEV_TEST_GUILD_ID:
+            print(f"MEMBER_UPDATE")
+            print(f"Avatar: {before.avatar}, {after.avatar}")
+            print(f"Avatar Decoration: {before.avatar_decoration}, {after.avatar_decoration}")
+
+    # @commands.Cog.listener()
+    # async def on_soundboard_sound_create(self, sound: discord.SoundboardSound):
+    #     print("CREATE")
+    #     print(sound)
+    #
+    # @commands.Cog.listener()
+    # async def on_soundboard_sound_update(self, before: discord.SoundboardSound, after: discord.SoundboardSound):
+    #     print("UPDATE")
+    #     print(f"{before=}, {after=}")
+    #
+    # @commands.Cog.listener()
+    # async def on_soundboard_sound_delete(self, sound: discord.SoundboardSound):
+    #     print("DELETE")
+    #     print(sound)
 
 async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))
