@@ -18,7 +18,7 @@ DEV_TEST_GUILD_ID = GuildID.dev_test
 
 class APITests(commands.Cog):
     """Commands and Events to test the API.
-    This cog is not loaded on startup and has to be loaded with the `load` command
+    This cog is not loaded on startup and has to be loaded with the `load` command.
     """
 
     def __int__(self, bot: Punchax):
@@ -84,6 +84,7 @@ class APITests(commands.Cog):
     # async def on_soundboard_sound_delete(self, sound: discord.SoundboardSound):
     #     print("DELETE")
     #     print(sound)
+
 
 async def setup(bot: Punchax):
     await bot.add_cog(APITests(bot))
