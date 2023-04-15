@@ -315,6 +315,7 @@ class Admin(commands.Cog):
                     if re.match(REGEX_URL_PATTERN, content) is None:
                         if no_code_block:
                             content = content.replace("\\\\", "\\")  # replace \\ to \
+                            content = content.replace("\\n", "\n")
                             await ctx.reply(content, mention_author=False)
                         else:
                             await ctx.reply(f"```{lang}\n{content}\n```", mention_author=False)
