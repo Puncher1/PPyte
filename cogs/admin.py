@@ -239,7 +239,15 @@ class Admin(commands.Cog):
 
     @commands.command(name="eval")
     async def _eval(self, ctx: Context, *, code: str):
-        """Evaluates Python code provided by the user."""
+        """Evaluates Python code provided by the user.
+
+        Options
+        --------
+        json:   Output is in json-codeblock
+        blank:  Output has no codeblocks
+        real:   Output is the "real" output. Sent in a codeblock
+
+        """
 
         env = {
             "discord": discord,
@@ -253,6 +261,7 @@ class Admin(commands.Cog):
 
         is_json = False
         no_code_block = False
+        is_real = False
         if code.startswith("json"):
             code = code.replace("json", "", 1).strip("\n").strip()
             is_json = True
@@ -260,6 +269,10 @@ class Admin(commands.Cog):
         if code.startswith("blank"):
             code = code.replace("blank", "", 1).strip()
             no_code_block = True
+
+        if code.startswith("real"):
+            code = code.replace("real", "", 1).strip()
+            is_real = True
 
         code = code.replace("```python", "").replace("```py", "").strip("```").strip("\n")
         exec_func = f"async def __exec_func():\n{textwrap.indent(code, ' ' * 4)}"
@@ -318,6 +331,10 @@ class Admin(commands.Cog):
                             content = content.replace("\\n", "\n")
                             await ctx.reply(content, mention_author=False)
                         else:
+                            if is_real:
+                                content = content.replace("\\\\", "\\")  # replace \\ to \
+                                content = content.replace("\\n", "\n")
+
                             await ctx.reply(f"```{lang}\n{content}\n```", mention_author=False)
                     else:
                         is_image = False
