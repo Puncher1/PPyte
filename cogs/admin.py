@@ -252,9 +252,14 @@ class Admin(commands.Cog):
         env.update(globals())
 
         is_json = False
+        no_code_block = False
         if code.startswith("json"):
             code = code.replace("json", "", 1).strip("\n").strip()
             is_json = True
+
+        if code.startswith("blank"):
+            code = code.replace("blank", "", 1).strip()
+            no_code_block = True
 
         code = code.replace("```python", "").replace("```py", "").strip("```").strip("\n")
         exec_func = f"async def __exec_func():\n{textwrap.indent(code, ' ' * 4)}"
@@ -308,7 +313,11 @@ class Admin(commands.Cog):
 
                 else:
                     if re.match(REGEX_URL_PATTERN, content) is None:
-                        await ctx.reply(f"```{lang}\n{content}\n```", mention_author=False)
+                        if no_code_block:
+                            content = content.replace("\\\\", "\\")  # replace \\ to \
+                            await ctx.reply(content, mention_author=False)
+                        else:
+                            await ctx.reply(f"```{lang}\n{content}\n```", mention_author=False)
                     else:
                         is_image = False
                         if "cdn.discordapp.com" in content:
