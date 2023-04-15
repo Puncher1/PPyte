@@ -246,7 +246,6 @@ class Admin(commands.Cog):
         json:   Output is in json-codeblock
         blank:  Output has no codeblocks
         real:   Output is the "real" output. Sent in a codeblock
-
         """
 
         env = {
