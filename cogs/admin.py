@@ -354,11 +354,17 @@ class Admin(commands.Cog):
         await self.bot.close()
 
     @commands.command()
-    async def sync(self, ctx: Context, option: Optional[Union[str, discord.Guild]] = None):
+    async def sync(self, ctx: Context, option: Optional[Union[Literal["all"], int]] = None):
         valid_str_options = ("all",)
+        if option is None:
+            guild = self.bot.get_guild(DEV_TEST_GUILD_ID)
+            await self.bot.tree.sync(guild=guild)
+            await ctx.reply(f"Done! Synced all guild commands in `{guild.name}`!", mention_author=False)  # type: ignore
 
-        if option is None or isinstance(option, discord.Guild):
-            guild = self.bot.get_guild(DEV_TEST_GUILD_ID) if option is None else option
+        elif isinstance(option, int):
+            guild = self.bot.get_guild(option)
+            if guild is None:
+                return await ctx.reply("Invalid guild given!")
 
             await self.bot.tree.sync(guild=guild)
             await ctx.reply(f"Done! Synced all guild commands in `{guild.name}`!", mention_author=False)  # type: ignore
