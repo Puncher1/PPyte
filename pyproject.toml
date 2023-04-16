@@ -9,6 +9,7 @@ exclude = [
     "dist",
     "venv",
     "tests",
+    "cogs/!api.py"
 ]
 reportUnnecessaryTypeIgnoreComment = "warning"
 reportUnusedImport = "error"
