@@ -9,7 +9,7 @@ import os
 import re
 from io import StringIO
 from contextlib import redirect_stdout
-from typing import TYPE_CHECKING, List, Optional, Literal
+from typing import TYPE_CHECKING, List, Optional, Literal, Union
 from enum import Enum
 
 import discord
@@ -354,12 +354,24 @@ class Admin(commands.Cog):
         await self.bot.close()
 
     @commands.command()
-    async def sync(self, ctx: Context, guild: Optional[discord.Guild] = None):
-        if guild is None:
-            guild = discord.Object(DEV_TEST_GUILD_ID)  # type: ignore
+    async def sync(self, ctx: Context, option: Optional[Union[str, discord.Guild]] = None):
+        valid_str_options = ("all",)
 
-        await self.bot.tree.sync(guild=guild)
-        await ctx.reply("Done!", mention_author=False)
+        if option is None or isinstance(option, discord.Guild):
+            guild = self.bot.get_guild(DEV_TEST_GUILD_ID) if option is None else option
+
+            await self.bot.tree.sync(guild=guild)
+            await ctx.reply(f"Done! Synced all guild commands in `{guild.name}`!", mention_author=False)  # type: ignore
+
+        else:
+            if option not in valid_str_options:
+                raise errors.BadArgument
+
+            if option == "all":
+                for guild in self.bot.guilds:
+                    await self.bot.tree.sync(guild=guild)
+
+                await ctx.reply("Done! Synced all local guild commands!", mention_author=False)
 
     @commands.command()
     async def bin(self, ctx: Context, dec: int, bit: Optional[int] = None):
