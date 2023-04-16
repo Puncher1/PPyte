@@ -8,7 +8,7 @@ from utils.debug import log, LogLevel
 from cogs.error import ErrorHandler
 
 IGNORED_EXTENSIONS = ["!", "__init__"]
-EXTENSIONS_DIRS = ["./cogs", "./cogs/minigames"]
+EXTENSIONS_DIRS = ["./cogs"]
 
 
 class Punchax(commands.Bot):
@@ -61,9 +61,6 @@ class Punchax(commands.Bot):
     # on_error isn't applied in Cog.listener
     async def on_error(self, event: str, *args: Any, **kwargs: Any):
         await ErrorHandler(self).on_error(event=event)
-
-    async def on_message(self, message: discord.Message):
-        await self.process_commands(message)
 
     # TODO: remove; for testing burst reactions
     # async def on_raw_reaction_add(self, payload):

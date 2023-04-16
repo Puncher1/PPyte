@@ -49,7 +49,7 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
-        print(f"Action: {entry.action}, Extra: {entry.extra}, Changes: {entry.changes}, Target: {entry.target}")
+        print(f"Action: {entry.action}, Changes: {entry.changes}, Extra: {entry.extra}, Target: {entry.target}")
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
@@ -69,6 +69,9 @@ class APITests(commands.Cog):
             print(f"MEMBER_UPDATE")
             print(f"Avatar: {before.avatar}, {after.avatar}")
             print(f"Avatar Decoration: {before.avatar_decoration}, {after.avatar_decoration}")
+
+    async def on_message(self, message: discord.Message):
+        await self.process_commands(message)
 
     # @commands.Cog.listener()
     # async def on_soundboard_sound_create(self, sound: discord.SoundboardSound):
