@@ -21,7 +21,7 @@ class APITests(commands.Cog):
     This cog is not loaded on startup and has to be loaded with the `load` command.
     """
 
-    def __int__(self, bot: Punchax):
+    def __init__(self, bot: Punchax):
         self.bot: Punchax = bot
 
     @commands.command()
