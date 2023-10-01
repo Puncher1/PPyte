@@ -296,7 +296,7 @@ class Admin(commands.Cog):
             except:
                 pass
 
-            ret_val = f"{ret_val!r}" if ret_val is not None else None
+            ret_val = f"{ret_val!r}" if ret_val is not None else "None"
             content = ret_val or value
             if not content.startswith("b'"):
                 content = content.strip("'")
