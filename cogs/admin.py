@@ -287,7 +287,7 @@ class Admin(commands.Cog):
             with redirect_stdout(output):
                 ret_val = await __exec_func()
         except:
-            return await self.send_eval_traceback(ctx, full=True)
+            return await self.send_eval_traceback(ctx, full=False)
 
         else:
             value = output.getvalue()
