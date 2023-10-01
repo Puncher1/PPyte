@@ -73,6 +73,34 @@ class APITests(commands.Cog):
     async def on_message(self, message: discord.Message):
         await self.process_commands(message)
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        print("RAW_ADD", payload.burst, payload.burst_colours, payload.burst_colors)
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload):
+        print("RAW_REMOVE", payload.burst, payload.burst_colours, payload.burst_colors)
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        print("ADD", reaction.me, reaction.me_burst, reaction.burst_colours,
+              reaction.burst_colors, reaction.count_details)
+
+    @commands.Cog.listener()
+    async def on_reaction_remove(self, reaction, user, is_burst):
+        print("REMOVE", reaction.me, reaction.me_burst, reaction.burst_colours,
+              reaction.burst_colors, reaction.count_details, is_burst)
+
+    @commands.command()
+    async def add(self, ctx, msg_id: int):
+        msg = await ctx.channel.fetch_message(msg_id)
+        await msg.add_reaction("👍")
+
+    @commands.command()
+    async def remove(self, ctx, msg_id: int):
+        msg = await ctx.channel.fetch_message(msg_id)
+        await msg.remove_reaction("👍", member=self.bot.user)
+
     # @commands.Cog.listener()
     # async def on_soundboard_sound_create(self, sound: discord.SoundboardSound):
     #     print("CREATE")
