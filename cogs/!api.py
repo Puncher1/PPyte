@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 from discord import app_commands
+from discord.audit_logs import _AuditLogProxy
 
 from utils.types import Context
 from .common import GuildID
@@ -49,7 +50,15 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
-        print(f"Action: {entry.action}, Changes: {entry.changes}, Extra: {entry.extra}, Target: {entry.target}")
+        extra = None
+        if entry.extra is not None:
+            if isinstance(entry.extra, _AuditLogProxy):
+                attrs = " ".join([f"{k}={v!r}" for k, v in entry.extra.__dict__.items()])
+                extra = f"<{entry.extra.__class__.__name__} {attrs}>"
+            else:
+                extra = entry.extra
+
+        print(f"Action: {entry.action}, Changes: {entry.changes}, Extra: {extra}, Target: {entry.target}")
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
@@ -83,13 +92,19 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        print("ADD", reaction.me, reaction.me_burst, reaction.burst_colours,
-              reaction.burst_colors, reaction.count_details)
+        print("ADD", reaction.me, reaction.me_burst, reaction.burst_colours, reaction.burst_colors, reaction.count_details)
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction, user, is_burst):
-        print("REMOVE", reaction.me, reaction.me_burst, reaction.burst_colours,
-              reaction.burst_colors, reaction.count_details, is_burst)
+        print(
+            "REMOVE",
+            reaction.me,
+            reaction.me_burst,
+            reaction.burst_colours,
+            reaction.burst_colors,
+            reaction.count_details,
+            is_burst,
+        )
 
     @commands.command()
     async def add(self, ctx, msg_id: int):
