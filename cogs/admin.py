@@ -282,22 +282,19 @@ class Admin(commands.Cog):
             return await self.send_eval_traceback(ctx, full=False)
 
         __exec_func = env["__exec_func"]
-        output = StringIO()
         try:
-            with redirect_stdout(output):
-                ret_val = await __exec_func()
+            ret_val = await __exec_func()
         except:
             return await self.send_eval_traceback(ctx, full=False)
 
         else:
-            value = output.getvalue()
             try:
                 await ctx.message.add_reaction(Emoji.white_check_mark)
             except:
                 pass
 
             ret_val = f"{ret_val!r}" if ret_val is not None else "None"
-            content = ret_val or value
+            content = ret_val
             if not content.startswith("b'"):
                 content = content.strip("'")
             if content not in (None, ""):
