@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 import inspect
 from enum import Enum
@@ -58,7 +59,8 @@ def log(msg: str, *, level: LogLevel, context: str = MISSING):
 
     frame = inspect.stack()[1]
     caller = inspect.getframeinfo(frame[0])
-    filename = caller.filename.split("\\")[-1]
+    filepath = Path(caller.filename).resolve()
+    filename = filepath.name
 
     print(
         f"{f.BOLD}{dt} {level_colors[level]}{level_fm}{f.RST} {f.PURPLE}Punchax:{filename} {context_fm}{f.RST}{msg}",
