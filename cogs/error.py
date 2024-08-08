@@ -4,6 +4,7 @@ import os
 import traceback
 import sys
 from typing import TYPE_CHECKING, Any
+from pathlib import Path
 
 import discord
 from discord.ext import commands
@@ -56,7 +57,7 @@ class ErrorHandler(commands.Cog):
         dt_fm = dt.strftime("%y%m%d_%H%M%S")
 
         filename = f"error_{dt_fm}.txt"
-        filepath = f"./temp/{filename}"
+        filepath = Path(f"./temp/{filename}").resolve()
         with open(filepath, "w+", encoding="utf-8") as file:
             file.write(get_full_traceback(error))
 
