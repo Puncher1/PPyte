@@ -351,8 +351,7 @@ class Admin(commands.Cog):
         await self.bot.close()
 
     @commands.command()
-    async def sync(self, ctx: Context, option: Optional[Union[Literal["all"], int]] = None):
-        valid_str_options = ("all",)
+    async def sync(self, ctx: Context, option: Optional[Union[Literal["all", "global"], int]] = None):
         if option is None:
             guild = self.bot.get_guild(DEV_TEST_GUILD_ID)
             await self.bot.tree.sync(guild=guild)
@@ -367,14 +366,15 @@ class Admin(commands.Cog):
             await ctx.reply(f"Done! Synced all guild commands in `{guild.name}`!", mention_author=False)  # type: ignore
 
         else:
-            if option not in valid_str_options:
-                raise errors.BadArgument
-
             if option == "all":
                 for guild in self.bot.guilds:
                     await self.bot.tree.sync(guild=guild)
 
                 await ctx.reply("Done! Synced all local guild commands!", mention_author=False)
+
+            elif option == "global":
+                await self.bot.tree.sync()
+                await ctx.reply("Done! Synced globally!", mention_author=False)
 
     @commands.command()
     async def bin(self, ctx: Context, dec: int, bit: Optional[int] = None):
