@@ -89,9 +89,11 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_channel_effect(self, effect: discord.VoiceChannelEffect):
-        string = ("VOICE CHANNEL EFFECT\n"
-                  "---------------------\n"
-                  f"{effect.channel=}, {effect.user=}, {effect.animation=}, {effect.emoji=}, {effect.sound=}")
+        string = (
+            "VOICE CHANNEL EFFECT\n"
+            "---------------------\n"
+            f"{effect.channel=}, {effect.user=}, {effect.animation=}, {effect.emoji=}, {effect.sound=}"
+        )
 
         if effect.is_sound():
             sound = effect.sound
@@ -102,22 +104,21 @@ class APITests(commands.Cog):
 
     @commands.Cog.listener()
     async def on_soundboard_sound_create(self, sound: discord.SoundboardSound):
-        print("SOUNDBOARD CREATE\n"
-              "------------------\n"
-              f"{sound.available=}, {sound.created_at=}, {sound.emoji=}, {sound.guild=}, "
-              f"{sound.guild_id=}, {sound.id=}, {sound.name=}, {sound.user=}, {sound.volume=}\n")
+        print(
+            "SOUNDBOARD CREATE\n"
+            "------------------\n"
+            f"{sound.available=}, {sound.created_at=}, {sound.emoji=}, {sound.guild=}, "
+            f"{sound.guild_id=}, {sound.id=}, {sound.name=}, {sound.user=}, {sound.volume=}\n"
+        )
 
     @commands.Cog.listener()
     async def on_soundboard_sound_update(self, before: discord.SoundboardSound, after: discord.SoundboardSound):
-        print("SOUNDBOARD UPDATE\n"
-              "------------------\n"
-              f"{before=}, {after=}\n")
+        print("SOUNDBOARD UPDATE\n" "------------------\n" f"{before=}, {after=}\n")
 
     @commands.Cog.listener()
     async def on_soundboard_sound_delete(self, sound: discord.SoundboardSound):
-        print("SOUNDBOARD DELETE\n"
-              "------------------\n"
-              f"{sound}\n")
+        print("SOUNDBOARD DELETE\n" "------------------\n" f"{sound}\n")
+
 
 
 async def setup(bot: Punchax):
