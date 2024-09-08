@@ -16,16 +16,15 @@ if __name__ == "__main__":
     @app_commands.allowed_installs(guilds=False, users=True)
     @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def msg_call(interaction: discord.Interaction, message: discord.Message) -> None:
-        print(message.mentions)
-        print(message.type)
-
         call = message.call
         await interaction.response.send_message(
             f"{call=}\n\n"
             f"{call.ended_timestamp=}\n\n"
             f"{call.participants=}\n\n"
             f"{call.duration=}\n\n"
-            f"{call.is_ended()=}",
+            f"{call.is_ended()=}\n\n"
+            f"{message.system_content=}\n\n"
+            f"{message.mentions=}",
             ephemeral=True,
         )
 
